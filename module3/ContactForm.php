@@ -12,13 +12,27 @@
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $topic = $_POST['topic'];
-    $message = $_POST['message'];
+    $name = htmlspecialchars($_POST['name']);
+    $email = htmlspecialchars($_POST['email']);
+    $topic = htmlspecialchars($_POST['topic']);
+    $message = htmlspecialchars($_POST['message']);
 
-    echo "<p>Thank you, " . $name . "! We received your message about: \"" . $topic . "\"</p>\n";
-    echo "<p>We'll get back to you at " . $email . ".</p>\n";
+    $errors = [];
+    if (empty($name)) $errors[] = "Name is required.";
+    if (empty($email)) $errors[] = "Email is required.";
+    if (empty($topic)) $errors[] = "Topic is required.";
+
+    $wordCount = str_word_count($message);
+    if ($wordCount < 50 || $wordCount > 150) $errors[] = "Message must be between 50 and 150 words.";
+
+    if (empty($errors)) {
+        echo "<p>Thank you, " . $name . "! We received your message about: \"" . $topic . "\"</p>\n";
+        echo "<p>We'll get back to you at " . $email . ".</p>\n";
+    } else {
+        foreach ($errors as $error) {
+            echo "<p>" . $error . "</p>\n";
+        }
+    }
 }
 ?>
 
