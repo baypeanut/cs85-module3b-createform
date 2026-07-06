@@ -45,5 +45,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p><input type="submit" name="submit" value="Send" /></p>
 </form>
 
+<?php
+// reflections: htmlspecialchars was more important than i thought, stops XSS
+// the word count validation was tricky, str_word_count worked well
+// $_POST had everything i expected, no surprises there
+// didnt realize empty fields would cause warnings without validation
+?>
+
 </body>
 </html>
